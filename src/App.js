@@ -1,23 +1,46 @@
-import logo from './logo.svg';
+import { useState } from 'react';
 import './App.css';
 
 function App() {
+  const [todos, setTodos] = useState([])
+  const [text, setText] = useState('')
+
+  function add() {
+    const list = todos;
+    list.push(text);
+    setTodos(list);
+    setText('')
+  }
+
+  function updateText(e) {
+    setText(e.target.value)
+  }
+
+  function clean() {
+    setTodos([])
+  }
+
+  function deleteItem(index) {
+    const newItems = [...todos];
+    newItems.splice(index, 1);
+    setTodos(newItems);
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>Список задач</h1>
+      <input type='text' value={text} onChange={updateText}/>
+      <button onClick={add}>Добавить</button>
+      <button onClick={clean}>Очистить</button>
+
+      <ul>
+        {todos.map((todo, index)=>(
+          <li key={index}>
+            {todo}
+            <button onClick={() => deleteItem(index)}>Удалить</button> {/* Кнопка удаления */}
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
